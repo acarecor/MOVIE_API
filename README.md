@@ -28,4 +28,4 @@ The database was built using MongoDB and and the business logic was modeled usin
 
 In the following link you can see the application:
 
-(https://myflix-movies-2a93844126ef.herokuapp.com)
+(https://movie-api-j617.onrender.com)
