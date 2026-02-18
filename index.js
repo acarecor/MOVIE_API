@@ -185,6 +185,16 @@ app.put('/users/:username', passport.authenticate('jwt', {session: false }),
   ], 
   (req, res) => {
 
+    // PROTECTION GUEST 
+  if (req.params.username === 'guest') {
+    // Only allow changes in FavoriteMovies
+    if (req.body.password || req.body.email || req.body.username || req.body.birthday) {
+      return res.status(403).json({ 
+        message: 'Guest account settings cannot be modified. Please create your own account to customize your profile.' 
+      });
+    }
+  }
+
   let errors = validationResult(req);
     
   if (!errors.isEmpty()){
@@ -286,6 +296,14 @@ app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', {ses
  */
 app.delete("/users/:username", passport.authenticate('jwt', {session: false }),
 (req, res) => {
+
+  // PROTECTION GUEST
+  if (req.params.username === 'guest') {
+    return res.status(403).json({ 
+      message: 'Guest account cannot be deleted. Please create your own account.' 
+    });
+  }
+
   Users.findOneAndRemove({ username: req.params.username })
     .then((user) => {
       if (!user) {
